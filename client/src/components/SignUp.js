@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { withStyles } from '@mui/styles';
 import {Container, Card, CardContent, Typography, Button, TextField} from '@mui/material'
 import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
-import axios from 'axios';
 
 const useStyles = theme => ({
     card: {
@@ -41,38 +40,7 @@ const useStyles = theme => ({
    
 })
 
-class Login extends Component {
-    constructor() {
-        super()
-        this.state = {
-            email:"",
-            password:"",
-            errors:{}
-        }
-        this.handleChange = this.handleChange.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
-    }
-
-    
-    handleChange(e) {
-        this.setState({[e.target.name]: e.target.value})
-    }
-
-    onSubmit(e) {
-        e.preventDefault()
-        const newUser = {
-            email:this.state.email,
-            password:this.state.password
-        }
-
-        axios.post('/api/login', newUser)
-            .then((res) => {
-                console.log(res.data)
-            })
-            .catch((err) => {
-                console.log(err.response.data)
-            })
-    }
+class SignUp extends Component {
     
     render() {
         const {classes} = this.props;
@@ -82,16 +50,14 @@ class Login extends Component {
 
               <Card className={classes.card} sx={{ maxWidth: 345 }}>
                 <CardContent>
-                    <Typography variant="h3" align="center">Login</Typography>
+                    <Typography variant="h3" align="center">Sign up</Typography>
                 <FormContainer>
-                   <form onSubmit={this.onSubmit}>
+                   <form>
                     <FormGroup>
                         <TextField 
-                        label="Email" 
-                        name="email"
+                        label="Name" 
+                        name="name"
                         type="text"
-                        value={this.state.email} 
-                        onChange={this.handleChange}
                         variant="outlined"
                         className={classes.field}
                         InputLabelProps={{
@@ -102,12 +68,10 @@ class Login extends Component {
                     <FormGroup>
                         <TextField 
                         id="standard-basic" 
-                        label="Password" 
-                        name="password"
-                        type="password"
+                        label="Email" 
+                        name="email"
+                        type="email"
                         variant="outlined"
-                        value={this.state.password} 
-                        onChange={this.handleChange}
                         className={classes.field}
                         InputLabelProps={{
                             style: { color: '#fff' },
@@ -115,10 +79,36 @@ class Login extends Component {
                     />
                     </FormGroup>
                     <FormGroup>
+                        <TextField 
+                        id="standard-basic" 
+                        label="Password" 
+                        name="password"
+                        type="password"
+                        variant="outlined"
+                        className={classes.field}
+                        InputLabelProps={{
+                            style: { color: '#fff' },
+                          }}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <TextField 
+                        id="standard-basic" 
+                        label="Confirm Password" 
+                        name="confirm_password"
+                        type="password"
+                        variant="outlined"
+                        className={classes.field}
+                        InputLabelProps={{
+                            style: { color: '#fff' },
+                          }}
+                        />
+                    </FormGroup>
+                    <FormGroup>
                         <Typography variant="caption">Show password</Typography>    
                     </FormGroup>
                     <FormGroup>
-                        <Button type="submit" variant="contained" color="primary">Submit</Button>
+                        <Button variant="contained" color="primary">Signup</Button>
                     </FormGroup>
                     </form> 
                 </FormContainer>
@@ -130,4 +120,4 @@ class Login extends Component {
     }
 }
 
-export default (withStyles(useStyles)(Login));
+export default (withStyles(useStyles)(SignUp));
