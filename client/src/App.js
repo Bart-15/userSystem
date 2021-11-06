@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
-import { Routes, Route } from "react-router-dom";
-
+import { BrowserRouter as Router, Route
+ } from "react-router-dom";
+import {Provider} from 'react-redux'
+import store from './store'
 import '../src/styles/index.css'
 
 class App extends Component {
   render() {
     return (
-      <Routes>
-        <Route path='/signup' element={<SignUp/>} />
-        <Route path='/login' element={<Login/>} />
-      </Routes>
+      <>
+      <Provider store={store}>
+        <Router>
+          <Route exact path='/signup' component={SignUp} />
+          <Route exact path='/login' component={Login} />
+        </Router>
+      </Provider>
+      </>
     )
   }
 }

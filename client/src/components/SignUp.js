@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { withStyles } from '@mui/styles';
 import {Container, Card, CardContent, Typography, Button, TextField} from '@mui/material'
 import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
+import {connect} from 'react-redux'
+import { withRouter } from "react-router";
+import {createNewUser} from '../actions/authAction'
+
 
 const useStyles = theme => ({
     card: {
@@ -11,12 +15,12 @@ const useStyles = theme => ({
         position: 'relative',
         width:'400px'
     },
-
+    
     field : {
         color:'#fff',
         '& .MuiInputBase-root': {
             color: '#fff',
-          },
+        },
         '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
             '& fieldset': {            // - The <fieldset> inside the Input-root
                 borderColor: '#fff',   // - Set the Input border
@@ -30,33 +34,65 @@ const useStyles = theme => ({
                 borderColor: '#FFE77AFF',
                 color:'#fff !important',
             }
-    
+            
         },
     },
-
+    
     input : {
         color:'#fff'
     }
-   
+    
 })
 
 class SignUp extends Component {
-    
+    constructor() {
+            super() 
+            this.state = {
+                name:"",
+                email:"",
+                password:"",
+                confirm_password:"",
+                errors:{}
+            }
+
+            this.onChange = this.onChange.bind(this)
+            this.onSubmit = this.onSubmit.bind(this)
+        }
+
+        // onChange
+        onChange(e) {
+            this.setState({[e.target.name]: e.target.value})
+        }
+
+        
+        onSubmit(e) {
+            e.preventDefault()
+            const newUser = {
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+                confirm_password: this.state.confirm_password,
+            }
+
+            this.props.createNewUser(newUser, this.props.history)
+        }
+        
     render() {
         const {classes} = this.props;
         return (
             <Container>
              <CardContainer>
-
               <Card className={classes.card} sx={{ maxWidth: 345 }}>
                 <CardContent>
                     <Typography variant="h3" align="center">Sign up</Typography>
                 <FormContainer>
-                   <form>
+                   <form onSubmit={this.onSubmit}>
                     <FormGroup>
                         <TextField 
                         label="Name" 
                         name="name"
+                        onChange={this.onChange}
+                        value={this.state.name}
                         type="text"
                         variant="outlined"
                         className={classes.field}
@@ -66,10 +102,11 @@ class SignUp extends Component {
                          />
                     </FormGroup>
                     <FormGroup>
-                        <TextField 
-                        id="standard-basic" 
+                        <TextField  
                         label="Email" 
                         name="email"
+                        onChange={this.onChange}
+                        value={this.state.email}
                         type="email"
                         variant="outlined"
                         className={classes.field}
@@ -79,10 +116,11 @@ class SignUp extends Component {
                     />
                     </FormGroup>
                     <FormGroup>
-                        <TextField 
-                        id="standard-basic" 
+                        <TextField  
                         label="Password" 
                         name="password"
+                        onChange={this.onChange}
+                        value={this.state.password}
                         type="password"
                         variant="outlined"
                         className={classes.field}
@@ -92,10 +130,11 @@ class SignUp extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <TextField 
-                        id="standard-basic" 
+                        <TextField  
                         label="Confirm Password" 
                         name="confirm_password"
+                        onChange={this.onChange}
+                        value={this.state.confirm_password}
                         type="password"
                         variant="outlined"
                         className={classes.field}
@@ -108,7 +147,7 @@ class SignUp extends Component {
                         <Typography variant="caption">Show password</Typography>    
                     </FormGroup>
                     <FormGroup>
-                        <Button variant="contained" color="primary">Signup</Button>
+                        <Button type="submit" variant="contained" color="primary">Signup</Button>
                     </FormGroup>
                     </form> 
                 </FormContainer>
@@ -120,4 +159,9 @@ class SignUp extends Component {
     }
 }
 
-export default (withStyles(useStyles)(SignUp));
+const mapStateToProps = (state) => ({
+    auth:state.auth,
+    errors:state.errors
+})
+
+export default connect(mapStateToProps, {createNewUser}) ((withStyles(useStyles)(withRouter(SignUp))));
