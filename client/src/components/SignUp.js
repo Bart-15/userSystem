@@ -33,9 +33,12 @@ const useStyles = theme => ({
             '&.Mui-focused fieldset': { // - Set the Input border when parent is focused 
                 borderColor: '#FFE77AFF',
                 color:'#fff !important',
-            }
+            },
             
         },
+        '& p':{
+            color:'#333',
+          },
     },
     
     input : {
@@ -79,6 +82,7 @@ class SignUp extends Component {
         
     render() {
         const {classes} = this.props;
+        const {errors} = this.props.error;
         return (
             <Container>
              <CardContainer>
@@ -88,7 +92,8 @@ class SignUp extends Component {
                 <FormContainer>
                    <form onSubmit={this.onSubmit}>
                     <FormGroup>
-                        <TextField 
+                        <TextField                       
+                        helperText={errors.name ? errors.name : ""} 
                         label="Name" 
                         name="name"
                         onChange={this.onChange}
@@ -102,7 +107,8 @@ class SignUp extends Component {
                          />
                     </FormGroup>
                     <FormGroup>
-                        <TextField  
+                        <TextField                       
+                        helperText={errors.email ? errors.email : ""}   
                         label="Email" 
                         name="email"
                         onChange={this.onChange}
@@ -116,7 +122,8 @@ class SignUp extends Component {
                     />
                     </FormGroup>
                     <FormGroup>
-                        <TextField  
+                        <TextField                      
+                        helperText={errors.password ? errors.password : ""}   
                         label="Password" 
                         name="password"
                         onChange={this.onChange}
@@ -130,7 +137,8 @@ class SignUp extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <TextField  
+                        <TextField
+                        helperText={errors.confirm_password ? errors.confirm_password : ""}   
                         label="Confirm Password" 
                         name="confirm_password"
                         onChange={this.onChange}
@@ -161,7 +169,7 @@ class SignUp extends Component {
 
 const mapStateToProps = (state) => ({
     auth:state.auth,
-    errors:state.errors
+    error:state.error
 })
 
 export default connect(mapStateToProps, {createNewUser}) ((withStyles(useStyles)(withRouter(SignUp))));

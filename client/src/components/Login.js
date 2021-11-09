@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { withStyles } from '@mui/styles';
 import {Container, Card, CardContent, Typography, Button, TextField} from '@mui/material'
+import {connect} from 'react-redux'
+import {loginUser} from '../actions/authAction'
 import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
-import axios from 'axios';
 
 const useStyles = theme => ({
     card: {
@@ -31,7 +32,6 @@ const useStyles = theme => ({
                 borderColor: '#FFE77AFF',
                 color:'#fff !important',
             }
-    
         },
     },
 
@@ -60,26 +60,22 @@ class Login extends Component {
 
     onSubmit(e) {
         e.preventDefault()
-        const newUser = {
+        const user = {
             email:this.state.email,
             password:this.state.password
         }
 
-        axios.post('/api/login', newUser)
-            .then((res) => {
-                console.log(res.data)
-            })
-            .catch((err) => {
-                console.log(err.response.data)
-            })
+        this.props.loginUser(user)
+
+        
     }
     
     render() {
         const {classes} = this.props;
+        const {errors}  = this.props.error;
         return (
             <Container>
              <CardContainer>
-
               <Card className={classes.card} sx={{ maxWidth: 345 }}>
                 <CardContent>
                     <Typography variant="h3" align="center">Login</Typography>
@@ -90,6 +86,7 @@ class Login extends Component {
                         label="Email" 
                         name="email"
                         type="text"
+                        helperText={errors.email ? errors.email : ""}
                         value={this.state.email} 
                         onChange={this.handleChange}
                         variant="outlined"
@@ -101,8 +98,8 @@ class Login extends Component {
                     </FormGroup>
                     <FormGroup>
                         <TextField 
-                        id="standard-basic" 
                         label="Password" 
+                        helperText={errors.password ? errors.password : ""}
                         name="password"
                         type="password"
                         variant="outlined"
@@ -130,4 +127,8 @@ class Login extends Component {
     }
 }
 
-export default (withStyles(useStyles)(Login));
+const mapStateToProps = (state) => ({
+    error:state.error
+})
+
+export default connect(mapStateToProps, {loginUser}) (withStyles(useStyles)(Login));

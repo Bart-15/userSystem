@@ -6,6 +6,14 @@ import { BrowserRouter as Router, Route
 import {Provider} from 'react-redux'
 import store from './store'
 import '../src/styles/index.css'
+import checkJwt from './utils/checkJwt'
+
+
+
+if(localStorage.jwtToken) {
+    checkJwt(localStorage.jwtToken)
+}
+
 
 class App extends Component {
   render() {
