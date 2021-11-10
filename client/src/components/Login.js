@@ -3,6 +3,7 @@ import { withStyles } from '@mui/styles';
 import {Container, Card, CardContent, Typography, Button, TextField} from '@mui/material'
 import {connect} from 'react-redux'
 import {loginUser} from '../actions/authAction'
+import {withRouter} from 'react-router'
 import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
 
 const useStyles = theme => ({
@@ -53,7 +54,13 @@ class Login extends Component {
         this.onSubmit = this.onSubmit.bind(this)
     }
 
-    
+    // redirect to dashboard if user isAuth
+    componentDidMount() {
+        if(this.props.auth.isAuth){
+            this.props.history.push('/dashboard')
+        }
+    }
+
     handleChange(e) {
         this.setState({[e.target.name]: e.target.value})
     }
@@ -64,7 +71,6 @@ class Login extends Component {
             email:this.state.email,
             password:this.state.password
         }
-
         this.props.loginUser(user)
 
         
@@ -128,7 +134,8 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    error:state.error
+    error:state.error,
+    auth:state.auth
 })
 
-export default connect(mapStateToProps, {loginUser}) (withStyles(useStyles)(Login));
+export default connect(mapStateToProps, {loginUser}) (withStyles(useStyles)(withRouter(Login)));

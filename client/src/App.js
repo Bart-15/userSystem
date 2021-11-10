@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
-import { BrowserRouter as Router, Route
+import Dashboard from './components/dashboard/Dashboard'
+import { BrowserRouter as Router, Switch, Route
  } from "react-router-dom";
 import {Provider} from 'react-redux'
 import store from './store'
 import '../src/styles/index.css'
 import checkJwt from './utils/checkJwt'
+import PrivateRoute from './utils/PrivateRoute'
 
 
 
@@ -23,6 +25,9 @@ class App extends Component {
         <Router>
           <Route exact path='/signup' component={SignUp} />
           <Route exact path='/login' component={Login} />
+          <Switch>
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />  
+          </Switch>
         </Router>
       </Provider>
       </>

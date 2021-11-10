@@ -62,6 +62,13 @@ class SignUp extends Component {
             this.onSubmit = this.onSubmit.bind(this)
         }
 
+        // redirect to dashboard if user isAuth
+        componentDidMount() {
+            if(this.props.auth.isAuth){
+                this.props.history.push('/dashboard')
+            }
+        }
+
         // onChange
         onChange(e) {
             this.setState({[e.target.name]: e.target.value})
