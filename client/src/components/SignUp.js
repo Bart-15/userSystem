@@ -5,6 +5,8 @@ import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
 import {connect} from 'react-redux'
 import { withRouter } from "react-router";
 import {createNewUser} from '../actions/authAction'
+import PropTypes from 'prop-types'
+
 
 
 const useStyles = theme => ({
@@ -178,5 +180,11 @@ const mapStateToProps = (state) => ({
     auth:state.auth,
     error:state.error
 })
+
+SignUp.propTypes = {
+    createNewUser: PropTypes.func.isRequired,
+    error: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
+}
 
 export default connect(mapStateToProps, {createNewUser}) ((withStyles(useStyles)(withRouter(SignUp))));

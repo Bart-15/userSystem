@@ -15,7 +15,7 @@ const createNewUser = (data, history) => (dispatch) => {
 }
 
 
-const loginUser = data => (dispatch) => {
+const loginUser = (data, history) => (dispatch) => {
    axios.post('/api/login/', data)
         .then(res => {
             const {token} = res.data;
@@ -23,6 +23,7 @@ const loginUser = data => (dispatch) => {
             localStorage.setItem('jwtToken', token)
             const decoded = jwt_decode(token);
             dispatch(setUserData(decoded));
+            history.push('/dashboard')
         })
         .catch(err => {
             dispatch({
@@ -41,19 +42,36 @@ const setUserData = decoded  => {
 }
 
 
-const logoutUser  = dispatch => {
+const logoutUser = () => dispatch => {
     // remove jwt token from localStorage
     localStorage.removeItem('jwtToken')
-
+    
     // set token to false
     setToken(false)
-
+    
     // set user data to null or empty object
     dispatch(setUserData({}))
+}
+
+const deleteAccount  = () => dispatch => {
+    axios.delete('/api/myprofile/delete')
+        .then(res => {
+            localStorage.removeItem('jwtToken')
+            dispatch({
+                type:SET_USER,
+                payload:{}
+            })
+        }).catch(err => {
+            dispatch({
+                type:GET_ERRORS,
+                payload:err.response.data
+            })
+        })
 }
 export {
     createNewUser,
     loginUser, 
     setUserData,
-    logoutUser
+    logoutUser,
+    deleteAccount
 }
