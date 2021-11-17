@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withStyles } from '@mui/styles';
-import {Container, Card, CardContent, Typography, Button, TextField} from '@mui/material'
+import {Container, Card, CardContent, Typography, Button, TextField, FormControlLabel, Checkbox} from '@mui/material'
 import {connect} from 'react-redux'
 import {loginUser} from '../actions/authAction'
 import {withRouter} from 'react-router'
@@ -48,10 +48,12 @@ class Login extends Component {
         this.state = {
             email:"",
             password:"",
-            errors:{}
+            errors:{},
+            show_pass:false
         }
         this.handleChange = this.handleChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        this.onShowPass = this.onShowPass.bind(this)
     }
 
     // redirect to dashboard if user isAuth
@@ -72,8 +74,10 @@ class Login extends Component {
             password:this.state.password
         }
         this.props.loginUser(user, this.props.history)
+    }
 
-        
+    onShowPass(e){
+        this.setState({show_pass: !this.state.show_pass})
     }
     
     render() {
@@ -107,7 +111,7 @@ class Login extends Component {
                         label="Password" 
                         helperText={errors.password ? errors.password : ""}
                         name="password"
-                        type="password"
+                        type={this.state.show_pass ? "text" : "password"}
                         variant="outlined"
                         value={this.state.password} 
                         onChange={this.handleChange}
@@ -118,7 +122,10 @@ class Login extends Component {
                     />
                     </FormGroup>
                     <FormGroup>
-                        <Typography variant="caption">Show password</Typography>    
+                        <FormControlLabel value={this.state.show_pass} onChange={this.onShowPass} control={<Checkbox 
+                            
+                            className={classes.field}
+                        />} label="Show password"/>    
                     </FormGroup>
                     <FormGroup>
                         <Button type="submit" variant="contained" color="primary">Submit</Button>

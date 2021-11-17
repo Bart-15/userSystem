@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withStyles } from '@mui/styles';
-import {Container, Card, CardContent, Typography, Button, TextField} from '@mui/material'
+import {Container, Card, CardContent, Typography, Button, TextField, FormControlLabel, Checkbox} from '@mui/material'
 import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
 import {connect} from 'react-redux'
 import { withRouter } from "react-router";
@@ -62,6 +62,7 @@ class SignUp extends Component {
 
             this.onChange = this.onChange.bind(this)
             this.onSubmit = this.onSubmit.bind(this)
+            this.onShowPass = this.onShowPass.bind(this)
         }
 
         // redirect to dashboard if user isAuth
@@ -84,11 +85,15 @@ class SignUp extends Component {
                 email: this.state.email,
                 password: this.state.password,
                 confirm_password: this.state.confirm_password,
+                show_pass:false
             }
 
             this.props.createNewUser(newUser, this.props.history)
         }
         
+        onShowPass(){
+            this.setState({show_pass: !this.state.show_pass})
+        }
     render() {
         const {classes} = this.props;
         const {errors} = this.props.error;
@@ -137,7 +142,7 @@ class SignUp extends Component {
                         name="password"
                         onChange={this.onChange}
                         value={this.state.password}
-                        type="password"
+                        type={this.state.show_pass ? "text" : "password"}
                         variant="outlined"
                         className={classes.field}
                         InputLabelProps={{
@@ -152,7 +157,7 @@ class SignUp extends Component {
                         name="confirm_password"
                         onChange={this.onChange}
                         value={this.state.confirm_password}
-                        type="password"
+                        type={this.state.show_pass ? "text" : "password"}
                         variant="outlined"
                         className={classes.field}
                         InputLabelProps={{
@@ -161,7 +166,8 @@ class SignUp extends Component {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Typography variant="caption">Show password</Typography>    
+                        <FormControlLabel value={this.state.show_pass} onChange={this.onShowPass} control={<Checkbox  className={classes.field}
+                        /> }  label="Show Password"/>    
                     </FormGroup>
                     <FormGroup>
                         <Button type="submit" variant="contained" color="primary">Signup</Button>

@@ -52,17 +52,17 @@ router.post('/api/signup', async (req, res) => {
         const hashPassword = await bcrypt.hash(req.body.password, 8)
 
         //default image
-        const avatar = gravatar.url(req.body.email, {
-                s:'200', //size of image
-                r:'pg', 
-                d:'mm'
-        })
+        // const avatar = gravatar.url(req.body.email, {
+        //         s:'200', //size of image
+        //         r:'pg', 
+        //         d:'mm'
+        // })
 
         const newUser = new User({
             name: req.body.name,
             email: req.body.email,
             password:hashPassword,
-            avatar
+            avatar:null
         })
 
         await newUser.save()
@@ -101,7 +101,6 @@ router.post('/api/login', async (req, res) => {
             _id:user._id,
             name:user.name,
             email:user.email,
-            avatar:user.avatar,
         }
 
         const token = await jwt.sign(payload, secretOrKey, {expiresIn: 3600})
@@ -146,7 +145,7 @@ router.delete('/api/myprofile/delete', passport.authenticate('jwt', {session: fa
 router.post('/api/myprofile/avatar', passport.authenticate('jwt', {session:false}), upload.single('avatar'), async(req, res) => {
     const user = await User.findById(req.user._id)
     const buffer = await sharp(req.file.buffer).resize({width:250, height:250}).png().toBuffer();
-    const base64Image = Buffer.from(buffer).toString('base64');
+    const base64Image = new Buffer.from(buffer).toString("base64");
 
     try {
         user.avatar = base64Image;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
+import UpdateAvatar from './components/dashboard/UpdateAvatar'
 import Dashboard from './components/dashboard/Dashboard'
 import { BrowserRouter as Router, Switch, Route
  } from "react-router-dom";
@@ -26,7 +27,8 @@ class App extends Component {
           <Route exact path='/signup' component={SignUp} />
           <Route exact path='/login' component={Login} />
           <Switch>
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />  
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/update-avatar" component={UpdateAvatar} />  
           </Switch>
         </Router>
       </Provider>

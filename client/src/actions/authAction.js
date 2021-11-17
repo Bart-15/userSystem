@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ERRORS, SET_USER} from './types'
+import { GET_ERRORS, SET_USER, GET_PROFILE} from './types'
 import jwt_decode from 'jwt-decode'
 import setToken from '../utils/setToken'
 
@@ -43,6 +43,11 @@ const setUserData = decoded  => {
 
 
 const logoutUser = () => dispatch => {
+
+    dispatch({
+        type:GET_PROFILE,
+        payload:{}
+    })
     // remove jwt token from localStorage
     localStorage.removeItem('jwtToken')
     
@@ -54,7 +59,7 @@ const logoutUser = () => dispatch => {
 }
 
 const deleteAccount  = () => dispatch => {
-    axios.delete('/api/myprofile/delete')
+    axios.delete('/api/myprofile/delete/')
         .then(res => {
             localStorage.removeItem('jwtToken')
             dispatch({
@@ -68,10 +73,27 @@ const deleteAccount  = () => dispatch => {
             })
         })
 }
+
+
+const loadProfile = () => dispatch => {
+    axios.get('/api/myprofile')
+            .then(res => 
+                dispatch({
+                    type:GET_PROFILE,
+                    payload:res.data
+                })
+            )   
+            .catch(err => dispatch({
+                type:GET_ERRORS,
+                payload:err.response.data
+            }))
+           
+}
 export {
     createNewUser,
     loginUser, 
     setUserData,
     logoutUser,
-    deleteAccount
+    deleteAccount,
+    loadProfile
 }
