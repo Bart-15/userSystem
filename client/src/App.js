@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
-import UpdateAvatar from './components/dashboard/UpdateAvatar'
+import UpdateAvatar from './components/dropzone/UpdateAvatar'
 import Dashboard from './components/dashboard/Dashboard'
 import { BrowserRouter as Router, Switch, Route
  } from "react-router-dom";

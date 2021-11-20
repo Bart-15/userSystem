@@ -1,0 +1,14 @@
+.dropzone {
+  border-style: dotted;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color:#fff;
+}
+
+
+.btnContainer {
+    display: flex;
+    justify-content: space-between;
+}
