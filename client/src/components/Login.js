@@ -3,6 +3,7 @@ import { withStyles } from '@mui/styles';
 import {Container, Card, CardContent, Typography, Button, TextField, FormControlLabel, Checkbox} from '@mui/material'
 import {connect} from 'react-redux'
 import {loginUser} from '../actions/authAction'
+import {Link} from 'react-router-dom'
 import {withRouter} from 'react-router'
 import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
 
@@ -123,12 +124,14 @@ class Login extends Component {
                     </FormGroup>
                     <FormGroup>
                         <FormControlLabel value={this.state.show_pass} onChange={this.onShowPass} control={<Checkbox 
-                            
                             className={classes.field}
                         />} label="Show password"/>    
                     </FormGroup>
                     <FormGroup>
-                        <Button type="submit" variant="contained" color="primary">Submit</Button>
+                            <Typography variant="caption">Don't have an account? <Link to="/signup">Sign Up</Link> </Typography>
+                    </FormGroup>
+                    <FormGroup>
+                        <Button type="submit" variant="contained" color="primary">Log In</Button>
                     </FormGroup>
                     </form> 
                 </FormContainer>

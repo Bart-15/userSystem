@@ -59,19 +59,21 @@ const logoutUser = () => dispatch => {
 }
 
 const deleteAccount  = () => dispatch => {
-    axios.delete('/api/myprofile/delete/')
-        .then(res => {
-            localStorage.removeItem('jwtToken')
-            dispatch({
-                type:SET_USER,
-                payload:{}
+    if(window.confirm('Are you sure you want to delete this account?')){ 
+        axios.delete('/api/myprofile/delete/')
+            .then(res => {
+                localStorage.removeItem('jwtToken')
+                dispatch({
+                    type:SET_USER,
+                    payload:{}
+                })
+            }).catch(err => {
+                dispatch({
+                    type:GET_ERRORS,
+                    payload:err.response.data
+                })
             })
-        }).catch(err => {
-            dispatch({
-                type:GET_ERRORS,
-                payload:err.response.data
-            })
-        })
+    }
 }
 
 
@@ -87,9 +89,19 @@ const loadProfile = () => dispatch => {
                 type:GET_ERRORS,
                 payload:err.response.data
             }))
-           
+}
+
+const uploadAvatar = (data, history) => dispatch => {
+   axios.post('/api/myprofile/avatar', data)
+    .then(response => {
+        dispatch(history.push('/dashboard'));
+    }).catch(err => dispatch({
+        type:GET_ERRORS,
+        payload:err.response
+    }));
 }
 export {
+    uploadAvatar,
     createNewUser,
     loginUser, 
     setUserData,

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withStyles } from '@mui/styles';
 import {Container, Card, CardContent, Typography, Button, TextField, FormControlLabel, Checkbox} from '@mui/material'
 import {FormContainer, FormGroup, CardContainer} from '../styles/loginStyled'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { withRouter } from "react-router";
 import {createNewUser} from '../actions/authAction'
@@ -168,6 +169,9 @@ class SignUp extends Component {
                     <FormGroup>
                         <FormControlLabel value={this.state.show_pass} onChange={this.onShowPass} control={<Checkbox  className={classes.field}
                         /> }  label="Show Password"/>    
+                    </FormGroup>
+                    <FormGroup>
+                            <Typography variant="caption">Already have account? <Link to="/">Login</Link> </Typography>
                     </FormGroup>
                     <FormGroup>
                         <Button type="submit" variant="contained" color="primary">Signup</Button>

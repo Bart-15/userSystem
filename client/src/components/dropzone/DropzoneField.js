@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import {Container, Typography, TextField, Card, CardContent, Button} from "@mui/material"
 import { withStyles } from '@mui/styles';
+import { withRouter, Link } from 'react-router-dom';
+import './style.css'
+import {connect } from 'react-redux'
+import {uploadAvatar } from '../../actions/authAction'
 import {BsImage} from 'react-icons/bs'
-import axios from 'axios'
 
 const useStyles = theme => ({
     cardRoot : {
@@ -37,12 +40,14 @@ class DropzoneField extends Component {
         e.preventDefault();
         const formData = new FormData();
 
+        
         formData.append("avatar", this.state.image, this.state.image.name);
 
 
-        axios.post('/api/myprofile/avatar', formData)
-            .then(response => console.log(response))
-            .catch(err => console.log(err))
+        // axios.post('/api/myprofile/avatar', formData)
+        //     .then(response => console.log(response))
+        //     .catch(err => console.log(err))
+        this.props.uploadAvatar(formData, this.props.history)
     }
     
     handleEmptyImage() {
@@ -56,6 +61,10 @@ class DropzoneField extends Component {
         return (
             <div>
                 <Container>
+                    <br />
+                    <Button variant="contained" color="error" component={Link} to="/dashboard">Go Back</Button>
+                    <br />
+                    <br />
                     <Card className={classes.cardRoot}>
                         <CardContent>
                             <Typography variant="h4">Upload Image</Typography>
@@ -69,9 +78,11 @@ class DropzoneField extends Component {
                                         {
                                         this.state.image ?  (
                                                 <div>
-                                                    <img width="250" height="250" src={URL.createObjectURL(this.state.image)} alt="hello" />
-                                                    <Button variant="contained" color="error" onClick={this.handleEmptyImage}>Clear</Button>
-                                                    <Button type="submit" variant="contained" color="primary">Save</Button> 
+                                                    <img className="image" src={URL.createObjectURL(this.state.image)} alt="hello" />
+                                                    <div className="btnContainer">
+                                                        <Button sx={{margin:2}} variant="contained" color="error" onClick={this.handleEmptyImage}>Clear</Button>
+                                                        <Button sx={{margin:2}} type="submit" variant="contained" color="primary">Save</Button> 
+                                                    </div>
                                                 </div>
 
                                         ) : ""
@@ -85,4 +96,6 @@ class DropzoneField extends Component {
     }
 }
 
-export default (withStyles(useStyles)(DropzoneField));
+
+
+export default connect(null, {uploadAvatar}) (withStyles(useStyles)(withRouter(DropzoneField)));
